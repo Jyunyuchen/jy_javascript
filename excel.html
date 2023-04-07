@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>俊宇的Excel讀取</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        
+    </head>
+    <body>
+        <input type="file" onchange="getExcelData(this)">
+
+        <script>
+
+        const jsonStr = [
+            {
+                color:"紅",
+                name:"red"
+            },
+            {
+                color:"黃",
+                name:"yello"
+            },
+            {
+                color:"綠",
+                name:"green"
+            }
+        ];
+
+        function getExcelData(f) {
+
+            let reader = new FileReader();
+
+            //文件加载完成后调用
+            reader.onload = function (e) {
+
+                //從檔案獲取原始資料 
+                let data = e.target.result;
+
+                //從原始資料獲取工作簿
+                //兼容IE，需把type改为binary，并对data进行转化
+                let workbook = XLSX.read(data, {     //手动转化
+                    type: 'binary'
+                });
+
+                let sheet = workbook.Sheets[workbook.SheetNames[0]];
+                let range = XLSX.utils.decode_range(sheet['!ref']);
+
+                var cell = sheet[XLSX.utils.encode_cell({c:1, r:0})];
+                console.log(XLSX.utils.format_cell(cell));
+
+                // console.log(range);
+                // console.log("有幾行:" + range.e.r);
+                // console.log("有幾列:" + range.e.c);
+
+                // let jsonKeys = ["date", "index", "name"];
+
+                // //获取json格式的Excel数据
+                // var jsonData = XLSX.utils.sheet_to_json(sheet, {
+                //     header:jsonKeys,
+                //     defval: 'null'  //单元格为空时的默认值
+                // });
+
+                console.log(jsonData);
+
+                // const firstRow = ["color","name"];
+                // const firstRowDisplay = {color:"顏色", name:"名稱"};
+                // const newData = [firstRowDisplay, ...jsonStr];
+                // console.log(newData);
+
+                // let workSheet = XLSX.utils.json_to_sheet(newData,{header:firstRow, skipHeader:true});
+                // console.log(workSheet);
+                // const wb = XLSX.utils.book_new()
+                // XLSX.utils.book_append_sheet(wb, workSheet, 'david')
+                // XLSX.writeFileXLSX(wb, 'sheets.xlsx')
+
+            }
+
+            //加载文件
+            reader.readAsArrayBuffer(f.files[0]);
+        }
+
+        </script>
+
+    </body>
+
+
+</html>
