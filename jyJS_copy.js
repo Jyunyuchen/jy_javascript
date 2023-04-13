@@ -13,10 +13,9 @@ function pay(){
 function debounce(func, delay, cost, date){
 
   let timeouter;
-
+  let context = this;
   return function() {
     clearTimeout(timeouter);
-    let context = this;
     //let args = arguments;
     timeouter = setTimeout(function(){
       func.apply(context, [cost, date]);
@@ -25,8 +24,32 @@ function debounce(func, delay, cost, date){
 }
 
 const btn = document.querySelector('#btn');
-btn.addEventListener('click', debounce(pay, 1000, 5000, '2023-04-07 08:59'))
+// btn.addEventListener('click', debounce(pay, 1000, 5000, '2023-04-07 08:59'))
 //btn.addEventListener('click', clearDelay)
+//btn.addEventListener('click', bbb(1000, 5000, '2023-04-07 08:59'))
+btn.addEventListener('click', test())
+
+function test() {
+  console.log("目前的this是==>", this);
+}
+
+
+let timeouter;
+function bbb(delay, cost, date){
+
+  return function() {
+    clearTimeout(timeouter);
+    timeouter = setTimeout(function(){
+      console.log(`執行付款!! 支付了 ${cost} 元。支付時間：${date}`);
+    }, delay)
+  }
+}
+
+function aaa(func){
+
+  func();
+
+}
 
 
 function clearDelay() {
