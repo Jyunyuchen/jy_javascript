@@ -1,33 +1,88 @@
  
 function pay(){
-
-
   [cost, date] = [...arguments];
-  
   console.log(arguments);
   console.log(`執行付款!! 支付了 ${cost} 元。支付時間：${date}`);
   console.log("this目前指向===> ", this)
   
 }
 
-function debounce(func, delay, cost, date){
-
+// 防抖
+function debounceForEventListener(func, delay, cost, date){
   let timeouter;
-  let context = this;
   return function() {
+    // 執行這個函數的是btn
+    // 將這個btn的this的存下來綁定給func也就是pay函數
+    let context = this;
     clearTimeout(timeouter);
     //let args = arguments;
     timeouter = setTimeout(function(){
+      // 這裡調用func會是windows，所以不能直接傳this給apply
+      // 因此會在上面用context變數保存btn的this
       func.apply(context, [cost, date]);
     }, delay)
   }
 }
 
+// 節流
+// 不像防抖，一定要使用者等待延遲時間完之後才會執行所需要的函數，一直點不會執行函數，一定要點完等待延遲時間
+// 而節流是，使用者一直點仍然會同時在執行setTimeout中的函數，只是在執行的過程中，這些一直點要觸發函數的點擊事件會直接被忽略(return掉)
+// 可想成：第一次點擊的setTimeout還在執行函數啦，其他的先不做
+// 但使用者下N次的點擊，若setTimeout沒在執行函數(透過有無setTimeout ID判斷)
+// 就立即執行使用者的下N次的點擊
+// 不像防抖，一直點擊並不會在上一個setTimeout執行完接著執行下一個
+// 防抖一直點沒等待延遲時間走完，setTimeout就不會執行裡面的函數
+// 而節流一直點擊的過程中，只要上一個setTimeout執行完就會接著執行下一個(中間的點擊會忽略)
+function throttleForEventListener(func, delay, cost, date){
+  let timeouter = null;
+  return function() {
+    // 執行這個函數的是btn
+    // 將這個btn的this的存下來綁定給func也就是pay函數
+    let context = this;
+    //clearTimeout(timeouter);
+    //let args = arguments;
+    // 還在執行或等待執行setTimeout中的函數
+    if(timeouter) {
+      console.log('timeouter ==>', timeouter);
+      return;
+    };
+    timeouter = setTimeout(function(){
+      // 這裡調用func會是windows，所以不能直接傳this給apply
+      // 因此會在上面用context變數保存btn的this
+      func.apply(context, [cost, date]);
+      timeouter = null;
+    }, delay)
+  }
+}
+
+let _timeouter = null;
+let context = this;
+function debounce(func, delay, cost, date){
+  clearTimeout(_timeouter);
+  //let args = arguments;
+  _timeouter = setTimeout(function(){
+    func.apply(context, [cost, date]);
+  }, delay)
+}
+
 const btn = document.querySelector('#btn');
-// btn.addEventListener('click', debounce(pay, 1000, 5000, '2023-04-07 08:59'))
+btn.addEventListener('click', throttleForEventListener(pay, 1000, 5000, '2023-04-07 08:59'));
 //btn.addEventListener('click', clearDelay)
 //btn.addEventListener('click', bbb(1000, 5000, '2023-04-07 08:59'))
-btn.addEventListener('click', test())
+//btn.addEventListener('click', test())
+
+
+function btnClick() {
+
+  debounce(pay, 1000, 5000, '2023-04-07 08:59')
+
+}
+
+
+
+
+
+
 
 function test() {
   console.log("目前的this是==>", this);
