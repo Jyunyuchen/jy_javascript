@@ -1,7 +1,6 @@
 var aaaa = {};
-aaaa.a = { isEdit: true, name: 'David' };
-aaaa.b= { isEdit: false, name: 'Ken' };
-console.log(JSON.stringify(aaaa));
+aaaa['a'] = { isEdit: true, name: 'David' };
+console.log(aaaa);
 ///////////////////////////////////////////////////////////////////
 // interface numberIndex{
 //     [index:number]:string;
