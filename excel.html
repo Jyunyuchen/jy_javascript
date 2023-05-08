@@ -11,20 +11,45 @@
 
         <script>
 
-        const jsonStr = [
-            {
-                color:"紅",
-                name:"red"
-            },
-            {
-                color:"黃",
-                name:"yello"
-            },
-            {
-                color:"綠",
-                name:"green"
-            }
-        ];
+        // const jsonStr = [
+        //     {
+        //         color:"紅",
+        //         name:"red"
+        //     },
+        //     {
+        //         color:"黃",
+        //         name:"yello"
+        //     },
+        //     {
+        //         color:"綠",
+        //         name:"green"
+        //     }
+        // ];
+
+        function ExcelDateToJSDate(serial) {
+            // 1. 計算自 1900 年 1 月 1 日以來的天數
+            var utc_days  = Math.floor(serial - 25569);
+            // 2. 將天數轉換為秒數
+            var utc_value = utc_days * 86400;                                        
+            // 3. 使用 UTC 時區創建日期物件
+            var date_info = new Date(utc_value * 1000);
+
+            // 4. 計算小數部分，即時間部分
+            var fractional_day = serial - Math.floor(serial); //+ 0.0000001;
+
+            // 5. 將時間部分轉換為秒數
+            var total_seconds = Math.floor(86400 * fractional_day);
+
+            // 6. 計算小時、分鐘和秒
+            var seconds = total_seconds % 60;
+            total_seconds -= seconds;
+            var hours = Math.floor(total_seconds / (60 * 60));
+            var minutes = Math.floor(total_seconds / 60) % 60;
+
+            // 7. 創建新的日期物件，並返回
+            return `${date_info.getFullYear()}-${date_info.getMonth()+1}-${date_info.getDate()} ${hours}:${minutes}:${seconds}`
+            //return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+        }
 
         function getExcelData(f) {
 
@@ -45,8 +70,14 @@
                 let sheet = workbook.Sheets[workbook.SheetNames[0]];
                 let range = XLSX.utils.decode_range(sheet['!ref']);
 
-                var cell = sheet[XLSX.utils.encode_cell({c:1, r:0})];
-                console.log(XLSX.utils.format_cell(cell));
+                var cell = sheet[XLSX.utils.encode_cell({r:1, c:3})];
+                console.log('cell ==> ',  cell);
+                console.log('format_cell ==> ' ,  XLSX.utils.format_cell(cell));
+                console.log('cell type ==> ' , cell.t);
+                console.log('cell v ==> ' , cell.v);
+                console.log('SSF.is_date_format ==> ' , XLSX.SSF.is_date(XLSX.utils.format_cell(cell)));
+
+                console.log('ExcelDateToJSDate(cell.v) ==> ' , ExcelDateToJSDate(cell.v));
 
                 // console.log(range);
                 // console.log("有幾行:" + range.e.r);
@@ -55,12 +86,12 @@
                 // let jsonKeys = ["date", "index", "name"];
 
                 // //获取json格式的Excel数据
-                // var jsonData = XLSX.utils.sheet_to_json(sheet, {
-                //     header:jsonKeys,
-                //     defval: 'null'  //单元格为空时的默认值
-                // });
+                let jsonData = XLSX.utils.sheet_to_json(sheet, {
+                    //header:jsonKeys,
+                    defval: 'null'  //单元格为空时的默认值
+                });
 
-                console.log(jsonData);
+                console.log("DATA ===> " + JSON.stringify(jsonData));
 
                 // const firstRow = ["color","name"];
                 // const firstRowDisplay = {color:"顏色", name:"名稱"};

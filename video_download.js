@@ -1,7 +1,7 @@
 
 let fileName = '';
 function btnClick(){
-    fetch("http://localhost:8080/video-download")
+    fetch("http://localhost:8080/youtube-download")
     .then(response => {
         // 獲取headers
         const headers = response.headers;
