@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Boder三角形</title>
+</head>
+
+<style>
+
+    body{
+        background-color: blue;
+        display: flex;
+        align-items: center;
+    }
+
+    .warp{
+        width: 410px;
+        margin: auto;
+    }
+
+    .warp img{
+        width: 100%;
+    }
+
+    .txt{
+        background-color: aliceblue;
+        position: relative;
+        width: 370px;
+        text-align: center;
+        padding: 20px;
+    }
+
+   .txt:before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-top: 50px solid transparent;
+        border-left: 205px solid aliceblue;
+        border-right: 205px solid aliceblue;
+        transform: translateY(-100%);
+    }
+
+
+</style>
+
+
+<body>
+    <div class="warp">
+        <img src="https://picsum.photos/300/300?random=2">
+        <div class="txt">
+            <h2>我是標題</h2>
+            <p>我是內文我是內文我是內文我是內文我是內文我是內文我是內文</p>
+        </div>
+    </div>
+    
+</body>
+</html>

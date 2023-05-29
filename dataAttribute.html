@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .myDiv{
+            width: 200px;
+            height: 200px;
+            background: blue;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="myDiv" data-test="我是資料1" myAttr="自定義屬性1"></div>
+    <div class="myDiv" data-test="我是資料2" myAttr="自定義屬性2"></div>
+    <div class="myDiv" data-test="我是資料3" myAttr="自定義屬性3"></div>
+
+    <script>
+
+        function clickHandler (event) {
+            console.log('data-* attribute 屬性的資料為:', this.dataset.test);
+            console.log('自定義屬性的資料為:', event.target.getAttribute('myAttr'));
+        }
+
+        const divs = document.querySelectorAll('.myDiv');
+        divs.forEach(div => div.addEventListener('click', clickHandler));
+
+
+
+    </script>
+
+
+
+
+</body>
+</html>
