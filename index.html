@@ -5,11 +5,22 @@
         <title>俊宇的網頁</title>
     </head>
     <body>
-        <button id="btn" onclick="btnClick()">點我</button>
-        <script src="test.js" ></script>
-        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script></script>
-    </body>
+        <button id="btn" onclick="throttle()">點我</button>
+        <!-- <script src="test.js" ></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+        <!-- <script src="./iife.js"></script> -->
+    
+    <script>
+        function hello() {
+            console.log('Hello !!!');
+        }
 
+        let debounced = _.debounce(hello, 1000);
+        let throttle = _.throttle(hello, 3000);
+
+    </script>
+    </body>
+    
 
 </html>

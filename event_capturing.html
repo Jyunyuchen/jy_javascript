@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>事件捕獲</title>
+    <style>
+        html {
+          box-sizing: border-box;
+        }
+      
+        *, *:before, *:after {
+          box-sizing: inherit;
+        }
+    </style>
+</head>
+<body>
+
+    <div data-name="div1" style=" width: 100%; background-color: aqua; padding: 100px;">div1
+        <div data-name="div2" style=" width: 100%; background-color:bisque; padding: 100px;">
+            div2
+            <div data-name="div3" style=" width: 100%; background-color:blueviolet; padding: 100px;">div3</div>
+        </div>
+    </div>
+
+
+    <script>
+        function divHandler(e) {
+            e.stopPropagation();
+            console.log('被觸發的div是:', this.dataset.name);
+        }
+
+        const divs = document.querySelectorAll('div');
+
+        divs.forEach(divDom =>{
+            divDom.addEventListener('click', divHandler, { capture : false });
+        })
+    </script>
+    
+</body>
+</html>

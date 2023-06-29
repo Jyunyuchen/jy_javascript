@@ -19,16 +19,28 @@
     <div class="myDiv" data-test="我是資料1" myAttr="自定義屬性1"></div>
     <div class="myDiv" data-test="我是資料2" myAttr="自定義屬性2"></div>
     <div class="myDiv" data-test="我是資料3" myAttr="自定義屬性3"></div>
+    <button class="btn">透過dataset屬性選取到dom元素</button>
 
     <script>
 
         function clickHandler (event) {
+            console.log('this是==>', this);
+            console.log('event==>', event.currentTarget);
             console.log('data-* attribute 屬性的資料為:', this.dataset.test);
             console.log('自定義屬性的資料為:', event.target.getAttribute('myAttr'));
         }
 
         const divs = document.querySelectorAll('.myDiv');
         divs.forEach(div => div.addEventListener('click', clickHandler));
+
+        document.querySelector('.btn').addEventListener('click', function(){
+            // 選取第一個div
+            const firstDiv = document.querySelector('div[data-test="我是資料1"]');
+
+            // 打印出來看是不是第一個div
+            console.log(firstDiv);
+
+        });
 
 
 
